@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+    <title>Corona tracker India</title>
+    <script type="text/javascript" src="fetchapi.js"></script>
+<script type="text/javascript">
+    async function getCovidData() {
+        const JSONData = await fetch("https://api.covid19india.org/state_district_wise.json");
+        console.log(JSONData);
+
+        const JSData = await JSONData.json();
+        console.log(JSData);
+
+        // Look in the console log for something like Object and then you will get several more objects which are
+        // named after seperate states. Inside that object another nested object would be there called districtData
+        //inside the disrictData you will see several nested objects named after the districts inside those objects
+        //there will be all the data..
+        //but along with the object "districtData" an object named "Unknown" will conain the state data
+        //try this:
+        // console.log(JSData["<state>"].districtData.["<districtname>"].confirmed)
+
+
+
+        //console.log(JSData["Andaman and Nicobar Islands"].districtData.Nicobars.confirmed);
+
+        document.getElementById("confirmed_anisland").innerHTML = JSData["Andaman and Nicobar Islands"].districtData.Unknown.confirmed;
+        document.getElementById("recovered_anisland").innerHTML = JSData["Andaman and Nicobar Islands"].districtData.Unknown.recovered;
+        document.getElementById("deaths_anisland").innerHTML = JSData["Andaman and Nicobar Islands"].districtData.Unknown.deceased;
+    }
+
+    //using the fetch api you can also get the data date wise
+    //the json file:  https://api.covid19india.org/data.json
+
+    getCovidData();
+</script>
+</head>
+
+<body>
+
+    <h1>State Data</h1>
+    <div id="state_data">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Total Confirmed</th>
+                <th>Total Recovered</th>
+                <th>Total Deaths</th>
+            </tr>
+            <tr>
+                <td>Andaman and Nicobar Islands</td>
+                <td id="confirmed_anisland"></td>
+                <td id="recovered_anisland"></td>
+                <td id="deaths_anisland"></td>
+            </tr>
+        </table>
+    </div>
+
+</body>
